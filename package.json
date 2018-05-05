@@ -1,0 +1,29 @@
+{
+  "name": "vocaby",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/VladimirJarabica/vocaby.git",
+  "scripts": {
+    "start": "parcel index.html"
+  },
+  "author": "VladimirJarabica <vladojarabica@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3",
+    "firebase": "^4.13.1",
+    "parcel-bundler": "^1.8.1",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "rimraf": "^2.6.2"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-flow": "^6.23.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "flow-bin": "^0.71.0",
+    "prettier": "^1.12.1"
+  }
+}
