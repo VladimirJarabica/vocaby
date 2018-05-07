@@ -8,7 +8,7 @@ import App from "./scenes/App";
 
 type Props = {
   user: ?Object,
-  firebase: Object
+  firebase: Object,
 };
 
 const PrivateRoute = ({ component: Component, user, ...rest }) => (
@@ -21,7 +21,7 @@ const PrivateRoute = ({ component: Component, user, ...rest }) => (
         <Redirect
           to={{
             pathname: "/login",
-            state: { from: props.location }
+            state: { from: props.location },
           }}
         />
       )
@@ -30,19 +30,23 @@ const PrivateRoute = ({ component: Component, user, ...rest }) => (
 );
 
 const Root = ({ user, firebase }: Props) => {
-  window.firebase = firebase
+  window.firebase = firebase;
   return (
     <Router>
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route
-          path="/login"
-          component={() => <Login user={user} auth={firebase.auth()} />}
-        />
+        <Route path="/login" component={() => <Login user={user} auth={firebase.auth()} />} />
         <PrivateRoute
           path="/app"
           user={user}
-          component={() => <App user={user} auth={firebase.auth()} />}
+          component={() => (
+            <App
+              languagesRef={firebase.database().ref("languages")}
+              rootRef={firebase.database().ref(`/users/${user.uid}`)}
+              user={user}
+              auth={firebase.auth()}
+            />
+          )}
         />
       </Switch>
     </Router>
