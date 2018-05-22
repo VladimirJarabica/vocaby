@@ -2,3 +2,5 @@ node_modules/
 .idea/
 config.js
 yarn-error.log
+.cache/
+dist/

@@ -4,7 +4,9 @@
   "main": "index.js",
   "repository": "https://github.com/VladimirJarabica/vocaby.git",
   "scripts": {
-    "start": "parcel index.html"
+    "start": "parcel index.html",
+    "build": "parcel build index.html",
+    "deploy": "firebase deploy"
   },
   "author": "VladimirJarabica <vladojarabica@gmail.com>",
   "license": "MIT",
