@@ -5,8 +5,9 @@
   "repository": "https://github.com/VladimirJarabica/vocaby.git",
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html",
-    "deploy": "firebase deploy"
+    "build": "yarn clear && parcel build index.html",
+    "deploy": "firebase deploy",
+    "clear": "rimraf dist"
   },
   "author": "VladimirJarabica <vladojarabica@gmail.com>",
   "license": "MIT",

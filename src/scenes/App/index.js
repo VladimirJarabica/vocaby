@@ -2,7 +2,11 @@
 import * as React from "react";
 import * as R from "ramda";
 
-import { Provider, actions, subscribe, getState } from "./store";
+import { FirebaseConsumer } from "../../services/FirebaseContext";
+
+// import { Provider, actions, subscribe, getState } from "./store";
+
+import { StoreProvider, StoreConsumer } from "../../services/StoreContext";
 
 import Main from "./scenes/Main";
 import cookies from "js-cookie";
@@ -42,12 +46,23 @@ class App extends React.PureComponent<Props> {
 
   render() {
     console.log("app");
-    return (
-      <Provider>
-        <Main logout={this.logout} rootRef={this.props.rootRef} />
-      </Provider>
-    );
+    return <Main />;
   }
 }
 
-export default App;
+export default () => (
+  <FirebaseConsumer>
+    {firebaseContext => (
+      <StoreProvider>
+        <StoreConsumer>{storeContext => <App />}</StoreConsumer>
+      </StoreProvider>
+    )}
+  </FirebaseConsumer>
+);
+
+// {/*{storeContext => {*/}
+// {/*// const rootRef = firebaseContext.firebase*/}
+// {/*//   .database()*/}
+// {/*//   .ref(`/users/${firebaseContext.user.uid}`)}*/}
+// {/*return <App />;*/}
+// {/*}}*/}

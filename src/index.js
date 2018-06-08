@@ -3,9 +3,11 @@ import * as React from "react";
 import ReactDOM from "react-dom";
 
 import App from "./App";
-import * as firebase from "firebase";
-import config from "../config";
+import { FirebaseProvider } from "./services/FirebaseContext";
 
-firebase.initializeApp(config);
-
-ReactDOM.render(<App firebase={firebase} />, document.getElementById("app"));
+ReactDOM.render(
+  <FirebaseProvider>
+    <App />
+  </FirebaseProvider>,
+  document.getElementById("app"),
+);

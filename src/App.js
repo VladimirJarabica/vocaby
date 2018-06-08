@@ -1,38 +1,40 @@
 // @flow
 import * as React from "react";
 
-import Root from "./Root"
+import Root from "./Root";
 import Loader from "./components/Loader";
 
+import { FirebaseConsumer } from "./services/FirebaseContext";
+
 type Props = {
-  firebase: Object,
+  auth: Object,
 };
 type State = {
-  user: ?Object,
-  loading: boolean
+  loading: boolean,
 };
 
 class App extends React.PureComponent<Props, State> {
   state = {
-    user: null,
-    loading: true
+    loading: true,
   };
   constructor(props) {
     super(props);
-    props.firebase.auth().onAuthStateChanged(user => {
-      console.log("onAuthStateChanged", user)
+    props.auth.onAuthStateChanged(user => {
+      console.log("onAuthStateChanged", user);
       this.setState({
         loading: false,
-        user
       });
     });
   }
 
   render() {
-    const { loading, user } = this.state;
+    const { loading } = this.state;
+    console.log("App", this.props, this.state);
     if (loading) return <Loader />;
-    return <Root firebase={this.props.firebase} user={user} />;
+    return <Root />;
   }
 }
 
-export default App;
+export default () => (
+  <FirebaseConsumer>{context => <App auth={context.firebase.auth()} />}</FirebaseConsumer>
+);

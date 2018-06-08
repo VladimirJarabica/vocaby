@@ -1,12 +1,13 @@
 // @flow
 import * as React from "react";
 import * as firebase from "firebase";
-import { Redirect } from "react-router-dom"
-// import { Lik } from "react-router-dom"
+import { Redirect } from "react-router-dom";
+
+import { FirebaseConsumer } from "../../services/FirebaseContext";
 
 type Props = {
   auth: Object,
-  user: Object
+  user: Object,
 };
 
 class Login extends React.PureComponent<Props> {
@@ -39,8 +40,8 @@ class Login extends React.PureComponent<Props> {
   render() {
     console.log("auth login", this.props.auth);
 
-    if(this.props.user) {
-      return <Redirect to="/app"/>
+    if (this.props.user) {
+      return <Redirect to="/app" />;
     }
     return (
       <div>
@@ -51,4 +52,10 @@ class Login extends React.PureComponent<Props> {
   }
 }
 
-export default Login;
+export default () => (
+  <FirebaseConsumer>
+    {firebaseContext => (
+      <Login user={firebaseContext.user} auth={firebaseContext.firebase.auth()} />
+    )}
+  </FirebaseConsumer>
+);
