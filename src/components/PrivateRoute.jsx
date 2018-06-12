@@ -2,10 +2,10 @@
 import * as React from "react";
 import { Route, Redirect } from "react-router-dom";
 
-import { AuthConsumer } from "../services/AuthContext";
+import { FirebaseConsumer } from "../services/FirebaseContext";
 
 const PrivateRoute = ({ component: Component, user, ...rest }) => (
-  <AuthConsumer>
+  <FirebaseConsumer>
     {context => (
       <Route
         {...rest}
@@ -23,7 +23,7 @@ const PrivateRoute = ({ component: Component, user, ...rest }) => (
         }
       />
     )}
-  </AuthConsumer>
+  </FirebaseConsumer>
 );
 
 export default PrivateRoute;

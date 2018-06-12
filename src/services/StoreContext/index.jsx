@@ -3,7 +3,13 @@ import * as React from "react";
 
 const StoreContext = React.createContext();
 
-export class StoreProvider extends React.PureComponent {
+type Props = {
+  rootRef: Object,
+};
+
+type State = {};
+
+export class StoreProvider extends React.PureComponent<Props, State> {
   state = {
     languages: [],
     studies: [],
@@ -27,7 +33,34 @@ export class StoreProvider extends React.PureComponent {
       words,
     });
   };
-  setSelectedStudy = (selectedStudy, vocabularyRef) => {
+  addWord = (original: string, translation: string) => {
+    const selectedStudyRef = this.props.rootRef.child("vocabulary").child(this.state.selectedStudy);
+
+    const key = selectedStudyRef.push().key;
+
+    selectedStudyRef.update({ [key]: { original, translation, score: 0 } });
+  };
+  updateWord = (id: string, original: string, translation: string) => {
+    this.props.rootRef
+      .child("vocabulary")
+      .child(this.state.selectedStudy)
+      .child(id)
+      .update({
+        [id]: {
+          original,
+          translation,
+        },
+      });
+  };
+  deleteWord = (id: string) => {
+    this.props.rootRef
+      .child("vocabulary")
+      .child(this.state.selectedStudy)
+      .child(id)
+      .remove();
+  };
+  setSelectedStudy = selectedStudy => {
+    const vocabularyRef = this.props.rootRef.child("vocabulary");
     if (this.state.selectedStudy) {
       vocabularyRef.child(this.state.selectedStudy).off();
     }
@@ -40,13 +73,23 @@ export class StoreProvider extends React.PureComponent {
   };
 
   render() {
-    return <StoreContext.Provider value={{
-      state: this.state,
-      setLanguages: this.setLanguages,
-      setStudies: this.setStudies,
-      setWords: this.setWords,
-      setSelectedStudy: this.setSelectedStudy,
-    }}>{this.props.children}</StoreContext.Provider>;
+    console.log(this.state);
+    return (
+      <StoreContext.Provider
+        value={{
+          state: this.state,
+          setLanguages: this.setLanguages,
+          setStudies: this.setStudies,
+          setWords: this.setWords,
+          addWord: this.addWord,
+          updateWord: this.updateWord,
+          deleteWord: this.deleteWord,
+          setSelectedStudy: this.setSelectedStudy,
+        }}
+      >
+        {this.props.children}
+      </StoreContext.Provider>
+    );
   }
 }
 

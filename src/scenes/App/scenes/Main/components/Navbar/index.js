@@ -9,16 +9,15 @@ import {
   NavItem,
   NavLink,
   Collapse,
-  UncontrolledDropdown,
-  DropdownToggle,
 } from "reactstrap";
 
-import { actions, connect } from "../../../../store";
-
+import { FirebaseConsumer } from "../../../../../../services/FirebaseContext";
+import { StoreConsumer } from "../../../../../../services/StoreContext";
 import StudySelection from "./components/StudySelection";
 
 type Props = {
   selectedStudy: ?string,
+  setSelectedStudy: string => void,
   studies: string[],
   languages: string[],
 };
@@ -26,20 +25,16 @@ type Props = {
 class Navbar extends React.PureComponent<Props> {
   setSelectedStudy = (selectedStudy: string) => {
     cookies.set("study", selectedStudy);
-    actions.setSelectedStudy({
-      selectedStudy,
-      vocabularyRef: this.props.rootRef.child("vocabulary"),
-      setWords: actions.setWords,
-    });
+    this.props.setSelectedStudy(selectedStudy);
   };
 
   logout = () => {
-    window.location = "/";
+    // window.location = "/";
     this.props.logout();
   };
 
   render() {
-    const { selectedStudy, studies, languages, logout } = this.props;
+    const { selectedStudy, studies, languages } = this.props;
     return (
       <NavbarBootstrap color="light" light expand="md">
         <NavbarBrand>Vocaby</NavbarBrand>
@@ -71,8 +66,21 @@ class Navbar extends React.PureComponent<Props> {
     );
   }
 }
-export default connect(state => ({
-  selectedStudy: state.selectedStudy,
-  studies: state.studies,
-  languages: state.languages,
-}))(Navbar);
+
+export default () => (
+  <FirebaseConsumer>
+    {firebase => (
+      <StoreConsumer>
+        {store => (
+          <Navbar
+            selectedStudy={store.state.selectedStudy}
+            studies={store.state.studies}
+            languages={store.state.languages}
+            setSelectedStudy={store.setSelectedStudy}
+            logout={firebase.logout}
+          />
+        )}
+      </StoreConsumer>
+    )}
+  </FirebaseConsumer>
+);
